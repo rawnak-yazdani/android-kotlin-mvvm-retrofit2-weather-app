@@ -39,12 +39,14 @@ class WeatherInfoShowModelImpl(private val context: Context): WeatherInfoShowMod
 
     override fun getWeatherInfo(cityId: Int, callback: RequestCompleteListener<WeatherInfoResponse>) {
 
+        // retrofit is giving the implementation of the interface
         val apiInterface: ApiInterface = RetrofitClient.client.create(ApiInterface::class.java)
+        // interface implementation's method is returning a response object
         val call: Call<WeatherInfoResponse> = apiInterface.callApiForWeatherInfo(cityId)
 
         call.enqueue(object : Callback<WeatherInfoResponse> {
 
-            // if retrofit network call success, this method will be triggered
+            // if retrofit network call is successful, this method will be triggered
             override fun onResponse(call: Call<WeatherInfoResponse>, response: Response<WeatherInfoResponse>) {
                 if (response.body() != null)
                     callback.onRequestSuccess(response.body()!!) //let presenter know the weather information data
