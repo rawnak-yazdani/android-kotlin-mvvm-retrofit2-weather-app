@@ -4,6 +4,7 @@ import com.rawnak.weatherappmvvm.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 
+// adding query parameter with Interceptor
 class QueryParameterAddInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -17,6 +18,8 @@ class QueryParameterAddInterceptor : Interceptor {
                 .url(url)
                 .build()
 
-        return chain.proceed(request)
+        val respose = chain.proceed(request)
+
+        return respose
     }
 }
