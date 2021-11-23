@@ -10,13 +10,13 @@ class QueryParameterAddInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val url = chain.request().url().newBuilder()
-                .addQueryParameter("appid", BuildConfig.APP_ID)
-                .build()
+            .addQueryParameter("appid", BuildConfig.APP_ID)
+            .build()
 
         val request = chain.request().newBuilder()
-                // .addHeader("Authorization", "Bearer token")
-                .url(url)
-                .build()
+//            .addHeader("Authorization", "Bearer token")
+            .url(url)
+            .build()
 
         val respose = chain.proceed(request)
 

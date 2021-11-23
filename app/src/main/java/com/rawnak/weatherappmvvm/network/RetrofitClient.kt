@@ -22,26 +22,26 @@ object RetrofitClient {
                     if (retrofit == null) {
 
                         val httpClient = OkHttpClient.Builder()
-                                .addInterceptor(QueryParameterAddInterceptor())
-
-                        // for pretty log of HTTP request-response
-                        httpClient.addInterceptor(
+                            .addInterceptor(QueryParameterAddInterceptor())
+                            // for pretty log of HTTP request-response
+                            .addInterceptor(
                                 LoggingInterceptor.Builder()
-                                        .loggable(BuildConfig.DEBUG)
-                                        .setLevel(Level.BASIC)
-                                        .log(Platform.INFO)
-                                        .request("LOG")
-                                        .response("LOG")
-                                        .executor(Executors.newSingleThreadExecutor())
-                                        .build())
+                                    .loggable(BuildConfig.DEBUG)
+                                    .setLevel(Level.BASIC)
+                                    .log(Platform.INFO)
+                                    .request("LOG")
+                                    .response("LOG")
+                                    .executor(Executors.newSingleThreadExecutor())
+                                    .build()
+                            )
 
                         val client = httpClient.build()
 
                         retrofit = Retrofit.Builder()
-                                .baseUrl(BuildConfig.BASE_URL)
-                                .addConverterFactory(GsonConverterFactory.create(gson))
-                                .client(client)
-                                .build()
+                            .baseUrl(BuildConfig.BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create(gson))
+                            .client(client)
+                            .build()
                     }
                 }
 
