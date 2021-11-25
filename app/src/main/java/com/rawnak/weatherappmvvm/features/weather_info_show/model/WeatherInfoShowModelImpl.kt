@@ -13,19 +13,23 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 
-class WeatherInfoShowModelImpl(private val context: Context): WeatherInfoShowModel {
+class WeatherInfoShowModelImpl(private val context: Context) : WeatherInfoShowModel {
 
     override fun getCityList(callback: RequestCompleteListener<MutableList<City>>) {
         try {
             val stream = context.assets.open("city_list.json")
 
-            val size = stream.available()
+            val size =
+                stream.available()   // it returns the number of bytes in corresponding json file
             val buffer = ByteArray(size)
-            stream.read(buffer)
+            stream.read(buffer)     // it reads the whole json file and sets it to the byte array
             stream.close()
-            val tContents  = String(buffer)
+            val tContents = String(buffer)      // converting byte array to a string
+            println("tContents ${tContents.replace("\n", "")}")
 
-            val groupListType = object : TypeToken<ArrayList<City>>() {}.type
+            // groupListType will hold the Type of the json file
+//            val groupListType = object : TypeToken<ArrayList<City>>() {}.type
+            val groupListType = object : TypeToken<MutableList<City>>() {}.type
             val gson = GsonBuilder().create()
             val cityList: MutableList<City> = gson.fromJson(tContents, groupListType)
 
@@ -37,7 +41,10 @@ class WeatherInfoShowModelImpl(private val context: Context): WeatherInfoShowMod
         }
     }
 
-    override fun getWeatherInfo(cityId: Int, callback: RequestCompleteListener<WeatherInfoResponse>) {
+    override fun getWeatherInfo(
+        cityId: Int,
+        callback: RequestCompleteListener<WeatherInfoResponse>
+    ) {
 
         // retrofit is giving the implementation of the interface
         val apiInterface: ApiInterface = RetrofitClient.client.create(ApiInterface::class.java)
@@ -47,7 +54,10 @@ class WeatherInfoShowModelImpl(private val context: Context): WeatherInfoShowMod
         call.enqueue(object : Callback<WeatherInfoResponse> {
 
             // if retrofit network call is successful, this method will be triggered
-            override fun onResponse(call: Call<WeatherInfoResponse>, response: Response<WeatherInfoResponse>) {
+            override fun onResponse(
+                call: Call<WeatherInfoResponse>,
+                response: Response<WeatherInfoResponse>
+            ) {
                 if (response.body() != null)
                     callback.onRequestSuccess(response.body()!!) //let presenter know the weather information data
                 else
